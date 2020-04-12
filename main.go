@@ -6,14 +6,14 @@ import (
 	"strings"
 )
 
-var globalScheduleInUTC = map[string][]DailyScheduleUTC{}
+var globalScheduleInUTC = map[string][]ScheduleUTC{}
 
 func main() {
-	http.HandleFunc("/getRates", getRates)
+	http.HandleFunc("/getRates", ratesAPI)
 	http.ListenAndServe(":8080", nil)
 }
 
-func getRates(responseWriter http.ResponseWriter, request *http.Request) {
+func ratesAPI(responseWriter http.ResponseWriter, request *http.Request) {
 
 	switch request.Method {
 	case "GET":
@@ -27,8 +27,16 @@ func getRates(responseWriter http.ResponseWriter, request *http.Request) {
 
 }
 
+/**
+getRateForRequest does two things
+1. Converts the rates json to a map of days having its schedule as itarray in UTC.
+   Note:
+
+*/
+
 func getRateForRequest(responseWriter http.ResponseWriter, request *http.Request) {
 
+	// Check if gloablScheduleInUTC has been populated with the schedule
 	if len(globalScheduleInUTC) == 0 {
 		repoInstance := repo{}
 		globalScheduleInUTC = getScheduleUTC(repoInstance)
@@ -36,10 +44,9 @@ func getRateForRequest(responseWriter http.ResponseWriter, request *http.Request
 	startTime := request.URL.Query()["startDate"][0]
 	endTime := request.URL.Query()["endDate"][0]
 
+	// Edge Case: + in url is reservered for " ". API is king!
 	startTime = strings.Replace(startTime, " ", "+", -1)
 	endTime = strings.Replace(endTime, " ", "+", -1)
-	fmt.Printf("The start time is %s \n", startTime)
-	fmt.Printf("The end time is %s \n", endTime)
 
 	rate := findRate(startTime, endTime)
 	fmt.Fprint(responseWriter, rate)

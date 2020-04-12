@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-type someHack interface {
+type IFileSystem interface {
 	getDataFromFileSystem() []byte
 }
 

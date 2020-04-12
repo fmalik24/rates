@@ -8,13 +8,11 @@ import (
 
 func findRate(startDate string, endDate string) string {
 
-	// startDate = "2015-07-01T07:00:00-04:00"
-	// endDate = "2015-07-01T07:00:00-04:00"
 	userStartDate, _ := time.Parse(time.RFC3339, startDate)
 	userEndDate, _ := time.Parse(time.RFC3339, endDate)
 
-	fmt.Printf("The start date is %s", userStartDate.String())
-	fmt.Printf("The start date is %s", userEndDate.String())
+	fmt.Printf("The start date is %s \n", userStartDate.String())
+	fmt.Printf("The end date is %s \n", userEndDate.String())
 
 	result := "unavailable"
 
@@ -40,7 +38,7 @@ func findRate(startDate string, endDate string) string {
 	return result
 }
 
-func findRatesFromScheudle(daySchedule []DailyScheduleUTC, userEndDayUTC string, userStartTimeUTC string, userEndTimeUTC string) string {
+func findRatesFromScheudle(daySchedule []ScheduleUTC, userEndDayUTC string, userStartTimeUTC string, userEndTimeUTC string) string {
 	for i := 0; i < len(daySchedule); i++ {
 		if convertDayToNumber(daySchedule[i].endDay) == getNextDayNumber(convertDayToNumber(userEndDayUTC)) {
 			if daySchedule[i].startTime <= userStartTimeUTC && daySchedule[i].endTime < userEndTimeUTC {

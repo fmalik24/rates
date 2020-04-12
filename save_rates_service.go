@@ -43,7 +43,7 @@ func saveRates(responseWriter http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	regPreCheck := repo{}
-	globalScheduleInUTC = getScheduleUTC(regPreCheck)
+	fileSystem := repo{}
+	globalScheduleInUTC = getScheduleUTC(fileSystem)
 
 }

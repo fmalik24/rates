@@ -1,16 +1,12 @@
 package main
 
-import (
-	"testing"
-)
-
-type mockRequestContext struct {
+type mockFileSystem struct {
 	mockGetDataFromFileSystem func() []byte
 }
 
 var testData = ""
 
-func (m *mockRequestContext) getDataFromFileSystem() []byte {
+func (m *mockFileSystem) getDataFromFileSystem() []byte {
 	if m.mockGetDataFromFileSystem != nil {
 		return []byte(testData)
 	}
@@ -59,70 +55,45 @@ func (m *mockRequestContext) getDataFromFileSystem() []byte {
 
 // }
 
-func TestGetScheduleUTC1(testHelper *testing.T) {
-
-	// Arrange:  verify that no error occurred in the process
-	testData = `{
-		"rates": [
-			{
-				"days": "mon,tues,thurs,fri,wed,sat,sun",
-				"times": "0600-0900",
-				"tz": "America/New_York",
-				"Price": 1500
-			}
-		]
-	}`
-
-	mockRequestClient := &mockRequestContext{
-		mockGetDataFromFileSystem: func() []byte {
-			return []byte(testData)
-		},
-	}
-
-	// Act
-	globalScheduleInUTC = getScheduleUTC(mockRequestClient)
-
-	price := findRate("2015-07-01T14:20:00-03:00", "2015-07-01T15:21:00-03:00")
-
-	if price == "2000" {
-
-	}
-
-	if len(globalScheduleInUTC) > 0 {
-
-	}
-	// Assert
-
-}
-
-// func TestFindRate(testHelper *testing.T) {
+// func TestGetScheduleUTC1(testHelper *testing.T) {
 
 // 	// Arrange:  verify that no error occurred in the process
 // 	testData = `{
 // 		"rates": [
 // 			{
-// 				"days": "wed",
-// 				"times": "0900-2100",
-// 				"tz": "America/Chicago",
-// 				"Price": 2
+// 				"days": "mon,tues,thurs,fri,wed,sat,sun",
+// 				"times": "0600-0900",
+// 				"tz": "America/New_York",
+// 				"Price": 1500
 // 			}
 // 		]
 // 	}`
 
-// 	mockRequestClient := &mockRequestContext{
+// 	mockRequestClient := &mockFileSystem{
 // 		mockGetDataFromFileSystem: func() []byte {
 // 			return []byte(testData)
 // 		},
 // 	}
 
+// 	// Act
 // 	globalScheduleInUTC = getScheduleUTC(mockRequestClient)
 
-// 	// Act
 // 	price := findRate("2015-07-01T14:20:00-03:00", "2015-07-01T15:21:00-03:00")
 
-// 	// Assert
-// 	if price != "1500" {
-// 		testHelper.Errorf("Expecting price to be 1500, got %s", price)
+// 	if price == "2000" {
+
 // 	}
 
+// 	if len(globalScheduleInUTC) > 0 {
+
+// 	}
+// 	// Assert
+
 // }
+
+// func createScheduleInUTC(rates Rates, scheduleInUTC map[string][]ScheduleUTC)
+// func getScheduleEntry(rate Rate) RateEntry
+// func createDaySchedule(rateEntry RateEntry, scheduleInUTC map[string][]ScheduleUTC)
+// func loadingDailySchedule(rateInstance RateEntry, day string, scheduleUTC map[string][]ScheduleUTC)
+// func createRates(byteValue []byte) Rates
+// func getDayNumberAfterTimeZoneConversion(timeInGivenTz time.Time, timeInUTC time.Time, dayNumber int)
