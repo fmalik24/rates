@@ -19,10 +19,27 @@ func convertDayToNumber(day string) int {
 }
 
 func getNextDayNumber(number int) int {
+
+	if number < 0 {
+		return -1
+	}
 	if number+1 == 7 {
 		return 0
 	}
 	return number + 1
+}
+
+func getPreviousDayNumber(number int) int {
+
+	if number < 0 {
+		return -1
+	}
+
+	if number == 0 {
+		return 6
+	}
+
+	return number - 1
 }
 
 func convertNumberToDay(number int) string {
@@ -59,5 +76,11 @@ func getDay(time time.Time) string {
 }
 
 func getDateTimeInUTC(day string, hours int, minutes int, location *time.Location) time.Time {
-	return time.Date(2001, time.January, int(time.Weekday(convertDayToNumber(day))), hours, minutes, 0, 0, location).UTC()
+
+	return time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), hours, minutes, 0, 0, location).UTC()
+}
+
+func getDateTime(day string, hours int, minutes int, location *time.Location) time.Time {
+
+	return time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), hours, minutes, 0, 0, location)
 }

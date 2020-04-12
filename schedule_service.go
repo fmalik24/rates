@@ -61,16 +61,24 @@ func populateDailySchedule(rateInstance RateEntry, day string, localDailyRatesUT
 	startMinutes, _ := strconv.Atoi(rateInstance.startTime[2:4])
 	endMinutes, _ := strconv.Atoi(rateInstance.endTime[2:4])
 
-	newStartTime := getDateTimeInUTC(day, startTimeHours, startMinutes, rateInstance.location)
-	newEndTime := getDateTimeInUTC(day, endtimeHours, endMinutes, rateInstance.location)
+	newStartTimeUTC := getDateTimeInUTC(day, startTimeHours, startMinutes, rateInstance.location)
+	newEndTimeUTC := getDateTimeInUTC(day, endtimeHours, endMinutes, rateInstance.location)
+
+	newStartTime := getDateTime(day, startTimeHours, startMinutes, rateInstance.location)
+	newEndTime := getDateTime(day, endtimeHours, endMinutes, rateInstance.location)
+	startDayNumber := convertDayToNumber(day)
+	endDayNumber := startDayNumber
+
+	startDayNumber = getDayNumberAfterTimeZoneConversion(newStartTime, newStartTimeUTC, startDayNumber)
+	endDayNumber = getDayNumberAfterTimeZoneConversion(newEndTime, newEndTimeUTC, endDayNumber)
 
 	var dailyScheduleUTC DailyScheduleUTC
 
-	dailyScheduleUTC.endDay = getDay(newEndTime)
-	dailyScheduleUTC.startTime = convertToTime(newStartTime)
-	dailyScheduleUTC.endTime = convertToTime(newEndTime)
+	dailyScheduleUTC.endDay = convertNumberToDay(endDayNumber)
+	dailyScheduleUTC.startTime = convertToTime(newStartTimeUTC)
+	dailyScheduleUTC.endTime = convertToTime(newEndTimeUTC)
 	dailyScheduleUTC.price = rateInstance.price
-	dayUTC := getDay(newStartTime)
+	dayUTC := convertNumberToDay(startDayNumber)
 
 	if _, ok := localDailyRatesUTC[dayUTC]; ok {
 		localDailyRatesUTC[dayUTC] = append(localDailyRatesUTC[dayUTC], dailyScheduleUTC)
@@ -85,4 +93,17 @@ func createRates(byteValue []byte) Rates {
 	var rates Rates
 	json.Unmarshal([]byte(byteValue), &rates)
 	return rates
+}
+
+func getDayNumberAfterTimeZoneConversion(timeInGivenTz time.Time, timeInUTC time.Time, dayNumber int) int {
+	if int(timeInGivenTz.Weekday()) < int(timeInUTC.Weekday()) {
+		dayNumber = getNextDayNumber(dayNumber)
+	}
+
+	if int(timeInGivenTz.Weekday()) > int(timeInUTC.Weekday()) {
+		dayNumber = getPreviousDayNumber(dayNumber)
+	}
+
+	return dayNumber
+
 }

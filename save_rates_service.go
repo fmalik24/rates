@@ -21,7 +21,7 @@ func saveRates(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 
 	ratesJSON, _ := json.MarshalIndent(rates, "", "    ")
-	//fmt.Printf("The Json is %s", string(ratesJSON))
+	fmt.Printf("The Json is %s", string(ratesJSON))
 	// Do something with the Person struct...
 	fmt.Fprintf(responseWriter, "Rates: %+v", rates)
 
