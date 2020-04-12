@@ -1,0 +1,120 @@
+openapi: "3.0.0"
+info:
+  description: "Rates API"
+  version: "2.0.0"
+  title: "Swagger Rates API"
+tags:
+- name: "Rates API"
+  description: "API to get or update rates"
+paths:
+  
+  /rate:
+    post:
+      tags:
+        - Rates
+      summary: Updates rates
+      description: |
+        Retrieve payment methods and services, with dependencies between them
+      operationId: validateBid
+      requestBody:
+        $ref: "#/components/requestBodies/RatesRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/RateRequestResponse"
+
+    get:
+      tags:
+        - Rates
+      summary: Get user rate for users requested times
+      description: |
+        By passing in the appropriate options, you can search for
+        available user preferences in the system
+      parameters:
+        - in: query
+          name: startDate
+          required: true
+          schema:
+            type: string
+          example: "2015-07-04T15:00:00+00:00"  
+        - in: query
+          name: endDate
+          required: true
+          schema:
+            type: string
+          example: "2015-07-04T20:00:00+00:00"
+      responses:
+        '200':
+          description: rate for the time slot
+          
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "1000"
+ 
+components:
+  requestBodies:
+  
+    RatesRequest:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RatesRequest"
+              
+  responses:
+    RateRequestResponse:
+      description: "success"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RatesRequest"
+            
+  schemas:
+
+    RatesRequest:
+      type: "object"
+      required:
+      - rates
+      properties:
+        rates:
+          type: "array"
+          items:
+            allOf:
+            - $ref: "#/components/schemas/RateParameters"
+            
+            
+  
+    RateParameters:
+      type: "object"
+      required: 
+      - days
+      - time
+      - tz
+      - price
+      allOf:
+      - $ref: "#/components/schemas/days"
+      - $ref: "#/components/schemas/times"
+      - $ref: "#/components/schemas/tz"
+      - $ref: "#/components/schemas/price"
+
+    days:
+      type: "object"
+      properties:
+        days:
+          type: "string"
+    times:
+      type: "object"
+      properties:
+        times:
+          type: "string"
+    tz:
+      type: "object"
+      properties:
+        tz:
+          type: "string"  
+    price:
+      type: "object"
+      properties:
+        price:
+          type: "integer"

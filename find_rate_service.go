@@ -67,7 +67,7 @@ func queryPrice(rateQueryFields RateQueryFields) string {
 
 		price := rateQueryFields.slots[i].price
 
-		// NOTE: User timings and slot timings are in UTC. Due to this a slot can span over a day but would be less than 24hr per contract
+		// NOTE: User timings and slot timings are in UTC. Due to this a slot can span over two days but would be less than 24hr per contract
 
 		// Case A
 		// Slot spans over a day
