@@ -11,6 +11,9 @@ func findRate(startDate string, endDate string) string {
 	userStartDate, _ := time.Parse(time.RFC3339, startDate)
 	userEndDate, _ := time.Parse(time.RFC3339, endDate)
 
+	fmt.Printf("The start date is %s", userStartDate.String())
+	fmt.Printf("The start date is %s", userEndDate.String())
+
 	result := "unavailable"
 
 	// Check if user is slot requests spans over a day

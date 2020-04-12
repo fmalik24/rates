@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 var globalScheduleInUTC = map[string][]DailyScheduleUTC{}
@@ -34,6 +35,12 @@ func getRateForRequest(responseWriter http.ResponseWriter, request *http.Request
 	}
 	startTime := request.URL.Query()["startDate"][0]
 	endTime := request.URL.Query()["endDate"][0]
+
+	startTime = strings.Replace(startTime, " ", "+", -1)
+	endTime = strings.Replace(endTime, " ", "+", -1)
+	fmt.Printf("The start time is %s \n", startTime)
+	fmt.Printf("The end time is %s \n", endTime)
+
 	rate := findRate(startTime, endTime)
 	fmt.Fprint(responseWriter, rate)
 }
