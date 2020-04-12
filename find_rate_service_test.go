@@ -240,3 +240,150 @@ func TestGetRate(testHelper *testing.T) {
 	}
 
 }
+
+func TestQueryPriceCaseC1(testHelper *testing.T) {
+
+	// Slot is with in the same day
+	// User requested start time and end time are in the same day
+
+	slots := []SlotUTC{
+		{
+			startTime: "1000",
+			endTime:   "1100",
+			price:     1000,
+			endDay:    "mon",
+			startDay:  "mon",
+		},
+		{
+			startTime: "0800",
+			endTime:   "1000",
+			price:     1,
+			endDay:    "mon",
+			startDay:  "mon",
+		}}
+
+	rateQueryFields := RateQueryFields{
+		slots:            slots,
+		userStartDayUTC:  "mon",
+		userEndDayUTC:    "mon",
+		userStartTimeUTC: "1000",
+		userEndTimeUTC:   "1100",
+	}
+
+	price := queryPrice(rateQueryFields)
+	if price != "1000" {
+
+	}
+
+}
+
+func TestQueryPriceCaseC(testHelper *testing.T) {
+
+	// Case C
+	// Slots spans over a day
+	// User requested start time is in first day and end time in the second day
+
+	slots := []SlotUTC{
+		{
+			startTime: "1000",
+			endTime:   "0900",
+			price:     1000,
+			endDay:    "tue",
+			startDay:  "mon",
+		},
+		{
+			startTime: "0800",
+			endTime:   "1000",
+			price:     1,
+			endDay:    "mon",
+			startDay:  "mon",
+		}}
+
+	rateQueryFields := RateQueryFields{
+		slots:            slots,
+		userStartDayUTC:  "mon",
+		userEndDayUTC:    "tue",
+		userStartTimeUTC: "1000",
+		userEndTimeUTC:   "0900",
+	}
+
+	price := queryPrice(rateQueryFields)
+	if price != "1000" {
+
+	}
+
+}
+
+func TestQueryPriceCaseB(testHelper *testing.T) {
+
+	// Case B
+	// Slot spans over a day
+	// User requested timing are in the second day
+
+	slots := []SlotUTC{
+		{
+			startTime: "1100",
+			endTime:   "0900",
+			price:     1000,
+			endDay:    "tues",
+			startDay:  "mon",
+		},
+		{
+			startTime: "1000",
+			endTime:   "1100",
+			price:     1,
+			endDay:    "mon",
+			startDay:  "mon",
+		}}
+
+	rateQueryFields := RateQueryFields{
+		slots:            slots,
+		userStartDayUTC:  "tues",
+		userEndDayUTC:    "tues",
+		userStartTimeUTC: "0800",
+		userEndTimeUTC:   "0900",
+	}
+
+	price := queryPrice(rateQueryFields)
+	if price != "1000" {
+
+	}
+
+}
+
+func TestQueryPriceCaseA(testHelper *testing.T) {
+
+	// Case A
+	// Slot spans over a day
+	// User requested timings are with in the first day
+
+	slots := []SlotUTC{
+		{
+			startTime: "1100",
+			endTime:   "0900",
+			price:     1000,
+			endDay:    "tues",
+			startDay:  "mon",
+		},
+		{
+			startTime: "1000",
+			endTime:   "1100",
+			price:     1,
+			endDay:    "mon",
+			startDay:  "mon",
+		}}
+
+	rateQueryFields := RateQueryFields{
+		slots:            slots,
+		userStartDayUTC:  "mon",
+		userEndDayUTC:    "mon",
+		userStartTimeUTC: "1100",
+		userEndTimeUTC:   "1200",
+	}
+
+	price := queryPrice(rateQueryFields)
+	if price != "1000" {
+
+	}
+
+}
