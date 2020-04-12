@@ -2,6 +2,7 @@ package main
 
 type mockFileSystem struct {
 	mockGetDataFromFileSystem func() []byte
+	mockSaveDataToFileSystem  func() []byte
 }
 
 var testData = ""
@@ -11,6 +12,13 @@ func (m *mockFileSystem) getDataFromFileSystem() []byte {
 		return []byte(testData)
 	}
 	return []byte("123")
+}
+
+func (m *mockFileSystem) saveDataToFileSystem(data []byte) {
+	if m.mockSaveDataToFileSystem != nil {
+		
+	}
+	// data = 0
 }
 
 // /* Test postiive */

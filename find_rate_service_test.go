@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestGetRatesSameTimeZone(testHelper *testing.T) {
 

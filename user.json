@@ -4,7 +4,7 @@
             "days": "mon,tues,thurs",
             "times": "0900-2100",
             "tz": "America/Chicago",
-            "Price": 1500
+            "Price": 111500
         },
         {
             "days": "fri,sat,sun",
@@ -16,7 +16,7 @@
             "days": "wed",
             "times": "0600-1800",
             "tz": "America/Chicago",
-            "Price": 1750
+            "Price": 1
         },
         {
             "days": "mon,wed,sat",
