@@ -6,10 +6,10 @@ import (
 	"strings"
 )
 
-var globalScheduleInUTC = map[string][]ScheduleUTC{}
+var globalScheduleInUTC = map[string][]SlotUTC{}
 
 func main() {
-	http.HandleFunc("/getRates", ratesAPI)
+	http.HandleFunc("/rates", ratesAPI)
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -48,6 +48,6 @@ func getRateForRequest(responseWriter http.ResponseWriter, request *http.Request
 	startTime = strings.Replace(startTime, " ", "+", -1)
 	endTime = strings.Replace(endTime, " ", "+", -1)
 
-	rate := findRate(startTime, endTime)
+	rate := findPrice(startTime, endTime)
 	fmt.Fprint(responseWriter, rate)
 }

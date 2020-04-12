@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"testing"
 )
 
@@ -33,23 +35,23 @@ func TestGetRatesSameTimeZone(testHelper *testing.T) {
 	// Act
 	globalScheduleInUTC = getScheduleUTC(mockRequestClient)
 
-	price := findRate("2015-07-01T06:00:00-04:00", "2015-07-01T09:00:00-04:00")
+	price := findPrice("2015-07-01T06:00:00-04:00", "2015-07-01T09:00:00-04:00")
 	if price != "1500" {
 		testHelper.Errorf("Got %s \nExpeted 1500", price)
 	}
 
-	price1 := findRate("2015-07-01T05:59:00-04:00", "2015-07-01T09:00:00-04:00")
+	price1 := findPrice("2015-07-01T05:59:00-04:00", "2015-07-01T09:00:00-04:00")
 	if price1 != "unavailable" {
 		testHelper.Errorf("Got %s \nExpeted unavailable", price)
 	}
 
-	price2 := findRate("2015-07-01T06:00:00-04:00", "2015-07-01T09:01:00-04:00")
+	price2 := findPrice("2015-07-01T06:00:00-04:00", "2015-07-01T09:01:00-04:00")
 	if price2 != "unavailable" {
 		testHelper.Errorf("Got %s \nExpeted unavailable", price)
 	}
 
 	// tear down
-	globalScheduleInUTC = make(map[string][]ScheduleUTC)
+	globalScheduleInUTC = make(map[string][]SlotUTC)
 }
 
 func TestGetRatesDifferentTimeZone(testHelper *testing.T) {
@@ -81,23 +83,23 @@ func TestGetRatesDifferentTimeZone(testHelper *testing.T) {
 	// Act
 	globalScheduleInUTC = getScheduleUTC(mockRequestClient)
 
-	price := findRate("2015-07-01T07:00:00-04:00", "2015-07-01T10:00:00-04:00")
+	price := findPrice("2015-07-01T07:00:00-04:00", "2015-07-01T10:00:00-04:00")
 	if price != "1500" {
 		testHelper.Errorf("Got %s \nExpeted 1500", price)
 	}
 
-	price1 := findRate("2015-07-01T06:59:00-04:00", "2015-07-01T10:00:00-04:00")
+	price1 := findPrice("2015-07-01T06:59:00-04:00", "2015-07-01T10:00:00-04:00")
 	if price1 != "unavailable" {
 		testHelper.Errorf("Got %s \nExpeted unavailable", price)
 	}
 
-	price2 := findRate("2015-07-01T07:00:00-04:00", "2015-07-01T10:01:00-04:00")
+	price2 := findPrice("2015-07-01T07:00:00-04:00", "2015-07-01T10:01:00-04:00")
 	if price2 != "unavailable" {
 		testHelper.Errorf("Got %s \nExpeted unavailable", price)
 	}
 
 	// tear down
-	globalScheduleInUTC = make(map[string][]ScheduleUTC)
+	globalScheduleInUTC = make(map[string][]SlotUTC)
 
 }
 
@@ -131,13 +133,13 @@ func TestGetRatesDifferentTimeZoneDifferentDay(testHelper *testing.T) {
 	globalScheduleInUTC = getScheduleUTC(mockRequestClient)
 
 	// Assert
-	price := findRate("2015-07-01T23:00:00-04:00", "2015-07-01T23:30:00-04:00")
+	price := findPrice("2015-07-01T23:00:00-04:00", "2015-07-01T23:30:00-04:00")
 	if price != "1500" {
 		testHelper.Errorf("Got %s \nExpeted 1500", price)
 	}
 
 	// Act
-	price1 := findRate("2015-07-01T22:59:00-04:00", "2015-07-01T23:30:00-04:00")
+	price1 := findPrice("2015-07-01T22:59:00-04:00", "2015-07-01T23:30:00-04:00")
 
 	// Assert
 	if price1 != "unavailable" {
@@ -145,13 +147,96 @@ func TestGetRatesDifferentTimeZoneDifferentDay(testHelper *testing.T) {
 	}
 
 	// Act
-	price2 := findRate("2015-07-01T23:00:00-04:00", "2015-07-01T23:51:00-04:00")
+	price2 := findPrice("2015-07-01T23:00:00-04:00", "2015-07-01T23:51:00-04:00")
 	// Assert
 	if price2 != "unavailable" {
 		testHelper.Errorf("Got %s \nExpeted unavailable", price)
 	}
 
 	// tear down
-	globalScheduleInUTC = make(map[string][]ScheduleUTC)
+	globalScheduleInUTC = make(map[string][]SlotUTC)
+
+}
+
+func TestGetRatesDifferentTimeZoneDifferentDay1(testHelper *testing.T) {
+
+	// Arrange:  verify that no error occurred in the process
+	testData = `{
+		"rates": [
+			{
+				"days": "mon,tues,thurs",
+				"times": "2300-2350",
+				"tz": "Asia/Karachi",
+				"Price": 2500
+			},
+			{
+				"days": "fri,wed,sat,sun",
+				"times":"2300-2350",
+				"tz": "Asia/Karachi",
+				"Price": 1500
+			}
+		]
+	}`
+
+	mockRequestClient := &mockFileSystem{
+		mockGetDataFromFileSystem: func() []byte {
+			return []byte(testData)
+		},
+	}
+
+	// Act
+	globalScheduleInUTC = getScheduleUTC(mockRequestClient)
+
+	// // Assert
+	// price := findRate("2015-07-01T23:00:00+05:00", "2015-07-01T23:30:00+05:00")
+	// if price != "1500" {
+	// 	testHelper.Errorf("Got %s \nExpeted 1500", price)
+	// }
+
+	// Act
+	price1 := findPrice("2015-07-01T22:59:00+05:00", "2015-07-01T23:30:00+05:00")
+
+	// Assert
+	if price1 != "unavailable" {
+		testHelper.Errorf("Got %s \nExpeted unavailable", price1)
+	}
+
+	// Act
+	price2 := findPrice("2015-07-01T23:00:00+05:00", "2015-07-01T23:51:00+05:00")
+	// Assert
+	if price2 != "unavailable" {
+		testHelper.Errorf("Got %s \nExpeted unavailable", price2)
+	}
+
+	// tear down
+	globalScheduleInUTC = make(map[string][]SlotUTC)
+
+}
+
+func TestGetRate(testHelper *testing.T) {
+
+	handlerFunction := http.HandlerFunc(ratesAPI)
+	url := "/rates?startDate=2015-07-04T15:00:00+00:00&endDate=2015-07-04T20:00:00+00:00"
+	httpVerb := "GET"
+
+	// Setup the request
+	request, err := http.NewRequest(httpVerb, url, nil)
+	if err != nil {
+		testHelper.Fatal(err)
+	}
+
+	// Setup the response recorder
+	response := httptest.NewRecorder()
+
+	//Act:
+	// Trigger HTTP request with the given data
+	handlerFunction.ServeHTTP(response, request)
+
+	// Assert:
+	// The status code is as per expectation
+	if status := response.Code; status != http.StatusOK {
+		testHelper.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
 
 }

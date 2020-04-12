@@ -7,14 +7,15 @@ import (
 	"time"
 )
 
-type ScheduleUTC struct {
+type SlotUTC struct {
 	startTime string
 	endTime   string
 	endDay    string
+	startDay  string
 	price     int
 }
 
-func getScheduleUTC(fsys IFileSystem) map[string][]ScheduleUTC {
+func getScheduleUTC(fsys IFileSystem) map[string][]SlotUTC {
 
 	// Lets get the JSON bytes from the file system
 	rateBytes := fsys.getDataFromFileSystem()
@@ -22,7 +23,7 @@ func getScheduleUTC(fsys IFileSystem) map[string][]ScheduleUTC {
 	// Then get the rates Rates instance intialized with rateBytes
 	rates := createRates(rateBytes)
 
-	scheduleInUTC := make(map[string][]ScheduleUTC)
+	scheduleInUTC := make(map[string][]SlotUTC)
 
 	// Create the Schedule in UTC
 	createScheduleInUTC(rates, scheduleInUTC)
@@ -30,7 +31,7 @@ func getScheduleUTC(fsys IFileSystem) map[string][]ScheduleUTC {
 	return scheduleInUTC
 }
 
-func createScheduleInUTC(rates Rates, scheduleInUTC map[string][]ScheduleUTC) {
+func createScheduleInUTC(rates Rates, scheduleInUTC map[string][]SlotUTC) {
 
 	// Loop thru each rate entry and update the scehdule by massaging the rate entry
 
@@ -55,7 +56,7 @@ func getScheduleEntry(rate Rate) RateEntry {
 
 }
 
-func createDaySchedule(rateEntry RateEntry, scheduleInUTC map[string][]ScheduleUTC) {
+func createDaySchedule(rateEntry RateEntry, scheduleInUTC map[string][]SlotUTC) {
 
 	// Loop thru each day and update the schedule
 	for i := 0; i < len(rateEntry.days); i++ {
@@ -63,7 +64,7 @@ func createDaySchedule(rateEntry RateEntry, scheduleInUTC map[string][]ScheduleU
 	}
 }
 
-func loadingDailySchedule(rateInstance RateEntry, day string, scheduleUTC map[string][]ScheduleUTC) {
+func loadingDailySchedule(rateInstance RateEntry, day string, scheduleUTC map[string][]SlotUTC) {
 
 	// Getting the hours from rate entry
 	startTimeHours, _ := strconv.Atoi(rateInstance.startTime[0:2])
@@ -86,20 +87,21 @@ func loadingDailySchedule(rateInstance RateEntry, day string, scheduleUTC map[st
 	// Get the day after converting to timezone
 	startDayNumber = getDayNumberAfterTimeZoneConversion(newStartTime, newStartTimeUTC, startDayNumber)
 	endDayNumber = getDayNumberAfterTimeZoneConversion(newEndTime, newEndTimeUTC, endDayNumber)
+	dayUTC := convertNumberToDay(startDayNumber)
 
-	var dailyScheduleUTC ScheduleUTC
+	var dailyScheduleUTC SlotUTC
 
 	dailyScheduleUTC.endDay = convertNumberToDay(endDayNumber)
 	dailyScheduleUTC.startTime = convertToTime(newStartTimeUTC)
 	dailyScheduleUTC.endTime = convertToTime(newEndTimeUTC)
 	dailyScheduleUTC.price = rateInstance.price
-	dayUTC := convertNumberToDay(startDayNumber)
+	dailyScheduleUTC.startDay = dayUTC
 
 	//  scheduleUTC maps's key is the day of the UTC time
 	if _, ok := scheduleUTC[dayUTC]; ok {
 		scheduleUTC[dayUTC] = append(scheduleUTC[dayUTC], dailyScheduleUTC)
 	} else {
-		var dailySchedulesUTC []ScheduleUTC
+		var dailySchedulesUTC []SlotUTC
 		scheduleUTC[dayUTC] = append(dailySchedulesUTC, dailyScheduleUTC)
 	}
 

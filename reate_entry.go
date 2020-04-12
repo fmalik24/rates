@@ -24,3 +24,11 @@ type Rate struct {
 	Tz    string `json:"tz"`
 	Price int    `json:"Price"`
 }
+
+type RateQueryFields struct {
+	slots            []SlotUTC
+	userEndDayUTC    string
+	userStartTimeUTC string
+	userEndTimeUTC   string
+	userStartDayUTC  string
+}
