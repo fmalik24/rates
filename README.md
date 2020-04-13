@@ -1,7 +1,7 @@
 # **Rates API**
 ------------
 
-##  Descroption
+##  Description
     API that allows a user to enter a date time range
     and get back the price at which they would be charged to park for that time span.
     
