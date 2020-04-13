@@ -1,41 +1,31 @@
-# **Sample Problem**
-
+# **Rates API**
 ------------
 
-#### Build an API (1) that allows a user to enter a date time range (2) and get back the price at which they would be charged to park for that time span (3)
+##  Descroption
+    API that allows a user to enter a date time range
+    and get back the price at which they would be charged to park for that time span.
+    
+    Note: Find API details in swagger.yml
+    
 
-4. The application publishes an API that computes a price for an input datetime range
-5. The user specifies input date/times as ISO-8601 with timezones
-6. Rates are specified by a JSON file
+## User Guide
+    
+    1. Clone the repo
+    2. cd in the project directory i.e /rates
+    
+    Docker 
+    1. docker build -t rates .
+    2. docker run -p 8080:8080 rates
 
-    a. A rate is comprised of a price, time range the rate is valid, and days of the week the rate applies to
+    Local System
+    1. go build ../rates
+    2. go run ../rates
 
-    b. See [here](#sample-json-for-testing) for an example
+    Tests
 
-7. User input can span more than one day, but the API shouldn't return a valid price  - it should return `unavailable`
-8. User input can span multiple rates, but the API shouldn't return a valid price - it should return `unavailable`
-9. Rates will not span multiple days
-10. The application publishes a second API endpoint where rate information can be updated by submitting a modified rates JSON and can be stored in memory
+    1. go test
+    2. go test -coverprofile cp.out 
 
-## Requirements
-
-11. Preferred languages are Python, Kotlin, Java, or Go to complete this
-  * If you are planning on using a different language, please let the recruiting team know your language of choice
-12. It should support JSON over HTTP
-13. API endpoints should be documented
-14. Tests need to be in place
-
-## Extra Credit
-
-15. Include a Swagger Spec
-16. Include a Dockerfile
-17. Metrics for endpoint(s) captured and available to be queried via an endpoint (e.g. average response time). Add the metrics you feel would be appropriate to identify the health and performance of your application
-
-## Submitting
-
-* Zip up your submission and submit it via GreenHouse
-  * You can achieve this with `git archive --format zip --output /full/path/to/zipfile.zip master` if using git
-* Include any instructions on how to build, run, and test your application
 
 ## Sample JSON for testing
 ```json
@@ -75,14 +65,12 @@
 }
 
 ```
-The timezones specified in the JSON file adhere to the 2017c version of the tz database. Assume that there could be other (non America/Chicago) timezones specified. For more information: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-
-Assume that rates in this file will never overlap
+The timezones specified in the JSON file adhere to the 2017c version of the tz database.
 
 ## Sample result
 Datetime ranges should be specified in ISO-8601 format.  A rate must completely encapsulate a datetime range for it to be available.
 
 
-* `2015-07-01T07:00:00-05:00` to `2015-07-01T12:00:00-05:00` should yield `1750`
-* `2015-07-04T15:00:00+00:00` to `2015-07-04T20:00:00+00:00` should yield `2000`
-* `2015-07-04T07:00:00+05:00` to `2015-07-04T20:00:00+05:00` should yield `unavailable`
+* `2015-07-01T07:00:00-05:00` to `2015-07-01T12:00:00-05:00`  yields `1750`
+* `2015-07-04T15:00:00+00:00` to `2015-07-04T20:00:00+00:00`  yields `2000`
+* `2015-07-04T07:00:00+05:00` to `2015-07-04T20:00:00+05:00`  yields `unavailable`
