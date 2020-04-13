@@ -76,11 +76,9 @@ func getDay(time time.Time) string {
 }
 
 func getDateTimeInUTC(day string, hours int, minutes int, location *time.Location) time.Time {
-
 	return time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), hours, minutes, 0, 0, location).UTC()
 }
 
 func getDateTime(day string, hours int, minutes int, location *time.Location) time.Time {
-
 	return time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), hours, minutes, 0, 0, location)
 }

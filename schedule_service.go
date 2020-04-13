@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// SlotUTC is a slot in the schedule
 type SlotUTC struct {
 	startTime string
 	endTime   string
@@ -123,5 +124,4 @@ func getDayNumberAfterTimeZoneConversion(timeInGivenTz time.Time, timeInUTC time
 	}
 
 	return dayNumber
-
 }

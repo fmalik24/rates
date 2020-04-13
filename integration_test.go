@@ -7,6 +7,9 @@ import (
 	"testing"
 )
 
+// Important: These are integration tests. They are dealing with an actual file system.
+// Tests would manipulate the rate.json.
+
 func TestGetRate(testHelper *testing.T) {
 
 	handlerFunction := http.HandlerFunc(ratesAPI)

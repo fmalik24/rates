@@ -22,5 +22,4 @@ func saveRates(responseWriter http.ResponseWriter, request *http.Request) {
 	globalScheduleInUTC = getScheduleUTC(fileSystem)
 
 	fmt.Fprintf(responseWriter, "Rates: %+v", rates)
-
 }

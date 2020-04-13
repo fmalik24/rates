@@ -6,6 +6,7 @@
     and get back the price at which they would be charged to park for that time span.
    2. API that allows to upload a new rate json 
    3. API that provides performance metrics
+
     Note: Find API details in swagger.yml
     
 ## User Guide
