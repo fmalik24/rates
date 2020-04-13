@@ -45,9 +45,9 @@ func getMetrics(responseWriter http.ResponseWriter, request *http.Request) {
 				sum += executionTimes[i].Microseconds()
 			}
 			result := sum / int64(len)
-			fmt.Fprintf(responseWriter, "Mean Time %d\n", result)
+			fmt.Fprintf(responseWriter, "Mean Time %d ms\n", result)
 			min, max := findMinAndMax(executionTimes)
-			fmt.Fprintf(responseWriter, "Min Time %d \nMax Time %d\nRequest count %d\n", min, max, len)
+			fmt.Fprintf(responseWriter, "Min Time %d ms \nMax Time %d ms\nRequest count %d\n", min, max, len)
 		}
 
 	}

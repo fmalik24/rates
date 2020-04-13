@@ -2,6 +2,7 @@ package main
 
 import "time"
 
+// RateEntry struct
 type RateEntry struct {
 	days      []string
 	startTime string
