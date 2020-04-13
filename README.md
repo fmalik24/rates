@@ -2,12 +2,12 @@
 ------------
 
 ##  Description
-    API that allows a user to enter a date time range
+   1.  API that allows a user to enter a date time range
     and get back the price at which they would be charged to park for that time span.
-    
+   2. API that allows to upload a new rate json 
+   3. API that provides performance metrics
     Note: Find API details in swagger.yml
     
-
 ## User Guide
     
     1. Clone the repo
@@ -22,7 +22,6 @@
     2. go run ../rates
 
     Tests
-
     1. go test
     2. go test -coverprofile cp.out 
 
