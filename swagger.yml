@@ -5,14 +5,14 @@ info:
   title: "Swagger Rates API"
 tags:
 - name: "Rates API"
-  description: "API to get or update rates"
+  description: "API For rates"
 paths:
   
   /rate:
     post:
       tags:
-        - Rates
-      summary: Updates rates
+        - Rates API
+      summary: Post new rates
       description: |
         Retrieve payment methods and services, with dependencies between them
       operationId: validateBid
@@ -24,7 +24,7 @@ paths:
 
     get:
       tags:
-        - Rates
+        - Rates API
       summary: Get user rate for users requested times
       description: |
         By passing in the appropriate options, you can search for
@@ -35,13 +35,13 @@ paths:
           required: true
           schema:
             type: string
-          example: "2015-07-04T15:00:00+00:00"  
+            example: "2015-07-04T15:00:00+00:00"  
         - in: query
           name: endDate
           required: true
           schema:
             type: string
-          example: "2015-07-04T20:00:00+00:00"
+            example: "2015-07-04T20:00:00+00:00"
       responses:
         '200':
           description: rate for the time slot
@@ -51,6 +51,21 @@ paths:
               schema:
                 type: string
                 example: "1000"
+                
+                
+  /mertrics:
+    get:
+      summary: Get Performance Metrics
+      tags:
+        - Metrics API
+      responses:
+        '200':
+          description: Metrics for mean time, max time and min time for a request to respond
+          content:
+            text/plain:
+              schema:
+                type: string
+                
  
 components:
   requestBodies:
@@ -103,18 +118,22 @@ components:
       properties:
         days:
           type: "string"
+          example: "mon,tues,wed,thurs,fri,sat,sun"
     times:
       type: "object"
       properties:
         times:
           type: "string"
+          example: "0900-2200"
     tz:
       type: "object"
       properties:
         tz:
           type: "string"  
+          example: "America/New_York"
     price:
       type: "object"
       properties:
         price:
           type: "integer"
+          example: 1000

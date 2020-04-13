@@ -25,6 +25,7 @@ type Rate struct {
 	Price int    `json:"Price"`
 }
 
+// RateQueryFields required for finding the price
 type RateQueryFields struct {
 	slots            []SlotUTC
 	userEndDayUTC    string
