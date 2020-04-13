@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-	"net/http/httptest"
 	"testing"
 )
 
@@ -187,11 +185,11 @@ func TestGetRatesDifferentTimeZoneDifferentDay1(testHelper *testing.T) {
 	// Act
 	globalScheduleInUTC = getScheduleUTC(mockRequestClient)
 
-	// // Assert
-	// price := findRate("2015-07-01T23:00:00+05:00", "2015-07-01T23:30:00+05:00")
-	// if price != "1500" {
-	// 	testHelper.Errorf("Got %s \nExpeted 1500", price)
-	// }
+	// Assert
+	price := findPrice("2015-07-01T23:00:00+05:00", "2015-07-01T23:30:00+05:00")
+	if price != "1500" {
+		testHelper.Errorf("Got %s \nExpeted 1500", price)
+	}
 
 	// Act
 	price1 := findPrice("2015-07-01T22:59:00+05:00", "2015-07-01T23:30:00+05:00")
@@ -210,34 +208,6 @@ func TestGetRatesDifferentTimeZoneDifferentDay1(testHelper *testing.T) {
 
 	// tear down
 	globalScheduleInUTC = make(map[string][]SlotUTC)
-
-}
-
-func TestGetRate(testHelper *testing.T) {
-
-	handlerFunction := http.HandlerFunc(ratesAPI)
-	url := "/rates?startDate=2015-07-04T15:00:00+00:00"
-	httpVerb := "GET"
-
-	// Setup the request
-	request, err := http.NewRequest(httpVerb, url, nil)
-	if err != nil {
-		testHelper.Fatal(err)
-	}
-
-	// Setup the response recorder
-	response := httptest.NewRecorder()
-
-	//Act:
-	// Trigger HTTP request with the given data
-	handlerFunction.ServeHTTP(response, request)
-
-	// Assert:
-	// The status code is as per expectation
-	if status := response.Code; status != http.StatusOK {
-		testHelper.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
 
 }
 
@@ -272,7 +242,7 @@ func TestQueryPriceCaseC1(testHelper *testing.T) {
 
 	price := queryPrice(rateQueryFields)
 	if price != "1000" {
-
+		testHelper.Errorf("Got %s \nExpeted 1000", price)
 	}
 
 }
@@ -309,7 +279,7 @@ func TestQueryPriceCaseC(testHelper *testing.T) {
 
 	price := queryPrice(rateQueryFields)
 	if price != "1000" {
-
+		testHelper.Errorf("Got %s \nExpeted 1000", price)
 	}
 
 }
@@ -346,7 +316,7 @@ func TestQueryPriceCaseB(testHelper *testing.T) {
 
 	price := queryPrice(rateQueryFields)
 	if price != "1000" {
-
+		testHelper.Errorf("Got %s \nExpeted 1000", price)
 	}
 
 }
@@ -383,7 +353,7 @@ func TestQueryPriceCaseA(testHelper *testing.T) {
 
 	price := queryPrice(rateQueryFields)
 	if price != "1000" {
-
+		testHelper.Errorf("Got %s \nExpeted 1000", price)
 	}
 
 }

@@ -22,7 +22,7 @@ func (repo repo) saveDataToFileSystem(data []byte) {
 }
 
 func getDataFromFileSystem() []byte {
-	jsonFile, err := os.Open("user.json")
+	jsonFile, err := os.Open("rate.json")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -33,7 +33,7 @@ func getDataFromFileSystem() []byte {
 }
 
 func saveDataToFileSystem(ratesJSON []byte) {
-	ratesFile, err := os.Create("user.json")
+	ratesFile, err := os.Create("rate.json")
 	if err != nil {
 		fmt.Println(err)
 		return

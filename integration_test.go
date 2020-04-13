@@ -7,6 +7,34 @@ import (
 	"testing"
 )
 
+func TestGetRate(testHelper *testing.T) {
+
+	handlerFunction := http.HandlerFunc(ratesAPI)
+	url := "/rates?startDate=2015-07-04T15:00:00+00:00&endDate=2015-07-04T20:00:00+00:00"
+	httpVerb := "GET"
+
+	// Setup the request
+	request, err := http.NewRequest(httpVerb, url, nil)
+	if err != nil {
+		testHelper.Fatal(err)
+	}
+
+	// Setup the response recorder
+	response := httptest.NewRecorder()
+
+	//Act:
+	// Trigger HTTP request with the given data
+	handlerFunction.ServeHTTP(response, request)
+
+	// Assert:
+	// The status code is as per expectation
+	if status := response.Code; status != http.StatusOK {
+		testHelper.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+
+}
+
 func TestPostRate(testHelper *testing.T) {
 
 	sampleJSON := `{
