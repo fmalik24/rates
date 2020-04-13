@@ -68,9 +68,14 @@
 The timezones specified in the JSON file adhere to the 2017c version of the tz database.
 
 ## Sample result
-Datetime ranges should be specified in ISO-8601 format.  A rate must completely encapsulate a datetime range for it to be available.
+Datetime ranges should be specified in ISO-8601 format.
 
 
 * `2015-07-01T07:00:00-05:00` to `2015-07-01T12:00:00-05:00`  yields `1750`
+* http://localhost:8080/rates?startDate=2015-07-01T07:00:00-05:00&endDate=2015-07-01T12:00:00-05:00
+
 * `2015-07-04T15:00:00+00:00` to `2015-07-04T20:00:00+00:00`  yields `2000`
+* http://localhost:8080/rates?startDate=2015-07-04T15:00:00+00:00&endDate=2015-07-04T20:00:00+00:00
+
 * `2015-07-04T07:00:00+05:00` to `2015-07-04T20:00:00+05:00`  yields `unavailable`
+* http://localhost:8080/rates?startDate=2015-07-04T07:00:00+05:00&endDate=2015-07-04T20:00:00+05:00
