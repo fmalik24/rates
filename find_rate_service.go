@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 )
@@ -10,9 +9,6 @@ func findPrice(startDate string, endDate string) string {
 
 	userStartDate, _ := time.Parse(time.RFC3339, startDate)
 	userEndDate, _ := time.Parse(time.RFC3339, endDate)
-
-	fmt.Printf("The start date is %s \n", userStartDate.String())
-	fmt.Printf("The end date is %s \n", userEndDate.String())
 
 	price := "unavailable"
 

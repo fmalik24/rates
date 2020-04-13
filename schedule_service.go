@@ -101,8 +101,8 @@ func loadingDailySchedule(rateInstance RateEntry, day string, scheduleUTC map[st
 	if _, ok := scheduleUTC[dayUTC]; ok {
 		scheduleUTC[dayUTC] = append(scheduleUTC[dayUTC], dailyScheduleUTC)
 	} else {
-		var dailySchedulesUTC []SlotUTC
-		scheduleUTC[dayUTC] = append(dailySchedulesUTC, dailyScheduleUTC)
+		var schedulesUTC []SlotUTC
+		scheduleUTC[dayUTC] = append(schedulesUTC, dailyScheduleUTC)
 	}
 
 }

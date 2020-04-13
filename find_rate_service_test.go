@@ -216,7 +216,7 @@ func TestGetRatesDifferentTimeZoneDifferentDay1(testHelper *testing.T) {
 func TestGetRate(testHelper *testing.T) {
 
 	handlerFunction := http.HandlerFunc(ratesAPI)
-	url := "/rates?startDate=2015-07-04T15:00:00+00:00&endDate=2015-07-04T20:00:00+00:00"
+	url := "/rates?startDate=2015-07-04T15:00:00+00:00"
 	httpVerb := "GET"
 
 	// Setup the request
