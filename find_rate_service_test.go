@@ -33,7 +33,7 @@ func TestGetRatesSameTimeZone(testHelper *testing.T) {
 	// Act
 	globalScheduleInUTC = getScheduleUTC(mockRequestClient)
 
-	price := findPrice("2015-07-01T06:00:00-04:00", "2015-07-01T09:00:00-04:00")
+	price := findPrice("2015-07-01T06:00:00-04:00", "2015-07-01T08:59:00-04:00")
 	if price != "1500" {
 		testHelper.Errorf("Got %s \nExpeted 1500", price)
 	}
@@ -81,7 +81,7 @@ func TestGetRatesDifferentTimeZone(testHelper *testing.T) {
 	// Act
 	globalScheduleInUTC = getScheduleUTC(mockRequestClient)
 
-	price := findPrice("2015-07-01T07:00:00-04:00", "2015-07-01T10:00:00-04:00")
+	price := findPrice("2015-07-01T07:00:00-04:00", "2015-07-01T09:59:00-04:00")
 	if price != "1500" {
 		testHelper.Errorf("Got %s \nExpeted 1500", price)
 	}
@@ -237,7 +237,7 @@ func TestQueryPriceCaseC1(testHelper *testing.T) {
 		userStartDayUTC:  "mon",
 		userEndDayUTC:    "mon",
 		userStartTimeUTC: "1000",
-		userEndTimeUTC:   "1100",
+		userEndTimeUTC:   "1059",
 	}
 
 	price := queryPrice(rateQueryFields)
@@ -274,7 +274,7 @@ func TestQueryPriceCaseC(testHelper *testing.T) {
 		userStartDayUTC:  "mon",
 		userEndDayUTC:    "tue",
 		userStartTimeUTC: "1000",
-		userEndTimeUTC:   "0900",
+		userEndTimeUTC:   "0859",
 	}
 
 	price := queryPrice(rateQueryFields)
@@ -311,7 +311,7 @@ func TestQueryPriceCaseB(testHelper *testing.T) {
 		userStartDayUTC:  "tues",
 		userEndDayUTC:    "tues",
 		userStartTimeUTC: "0800",
-		userEndTimeUTC:   "0900",
+		userEndTimeUTC:   "0859",
 	}
 
 	price := queryPrice(rateQueryFields)

@@ -78,7 +78,7 @@ func queryPrice(rateQueryFields RateQueryFields) string {
 		// Slot spans over a day
 		// User requested timing are in the second day
 		if getPreviousDayNumber(userStartDayNumber) == slodStartDayNumber && slotEndDayNumber == userEndDayNumber {
-			if userStartTime < slotStartTime && userEndTime <= slotEndTime {
+			if userStartTime < slotStartTime && userEndTime < slotEndTime {
 				return strconv.Itoa(price)
 			}
 		}
@@ -90,7 +90,7 @@ func queryPrice(rateQueryFields RateQueryFields) string {
 		// Slot is with in the same day
 		// User requested start time and end time are in the same day
 		if userStartDayNumber == slodStartDayNumber && userEndDayNumber == slotEndDayNumber {
-			if userStartTime >= slotStartTime && userEndTime <= slotEndTime {
+			if userStartTime >= slotStartTime && userEndTime < slotEndTime {
 				return strconv.Itoa(price)
 			}
 		}
