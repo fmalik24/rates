@@ -2,7 +2,7 @@ openapi: "3.0.0"
 info:
   description: "Rates API"
   version: "2.0.0"
-  title: "Swagger Rates API"
+  title: "Sswagger Rates API"
 tags:
 - name: "Rates API"
   description: "API For rates"
